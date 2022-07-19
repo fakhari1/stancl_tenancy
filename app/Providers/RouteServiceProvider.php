@@ -45,6 +45,16 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
+    protected function mapTenantRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
+            Route::middleware('web')
+                ->domain($domain)
+                ->namespace($this->namespace)
+                ->group(base_path('routes/tenant.php'));
+        }
+    }
+
 
     protected function mapWebRoutes()
     {
