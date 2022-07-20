@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TenantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,14 +13,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//
-Route::get('/', function () {
-    return view('welcome');
-});
+require __DIR__ . '/auth.php';
+require __DIR__ . '/tenant.php';
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/tenant.php';
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::get('/tenants/all', [TenantController::class, 'index'])->name('tenants');
+Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
+Route::post('/tenants/store', [TenantController::class, 'store'])->name('tenants.store');
+
