@@ -51,8 +51,8 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         if (Tenant::query()->count() > 0)
-            return redirect()->route('user.tenants.create');
-        
+            return redirect()->route('user.tenants.create', $user);
+
         return redirect(RouteServiceProvider::HOME);
     }
 }

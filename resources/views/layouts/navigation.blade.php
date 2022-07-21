@@ -12,37 +12,46 @@
 
                 <!-- Navigation Links -->
                 <nav class="navbar navbar-expand-lg navbar-light mr-auto">
-                    <ul class="flex mb-0">
-                        @admin
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Tenants
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @tenant
-                                @foreach($tenants as $tenant)
-                                    <a href="" class="dropdown-item">
-                                        {{ $tenant->domains()->first()->tenant_id }}
-                                    </a>
-                                @endforeach
-                                <div class="dropdown-divider"></div>
-                                @endtenant
-                                <a href="{{ route('tenants.create') }}" class="dropdown-item">New Tenant</a>
-                            </div>
-                        </li>
-                        @endadmin
-                        @user
-                        <a class="nav-item" href="{{ route('user.tenants.create', auth()->id()) }}">
-                            Choose Tenant
+                    @admin
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Tenants
                         </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @tenant
+                            @foreach($tenants as $tenant)
+                                <a href="" class="dropdown-item">
+                                    {{ $tenant->domains()->first()->tenant_id }}
+                                </a>
+                            @endforeach
+                            <div class="dropdown-divider"></div>
+                            @endtenant
+                            <a href="{{ route('tenants.create') }}" class="dropdown-item">New Tenant</a>
+                        </div>
+                    </li>
+                    @endadmin
+                    @user
+                    @if(auth()->user()->tenant_id == null)
+                        <span class="nav-item mr-2">
+                                <span>You are not a member of any tenant</span>
+                            </span>
+                    @else
+                        <span class="nav-item mr-2">
+                                <span>Your tenant is {{ auth()->user()->tenant_id }}</span>
+                            </span>
+                    @endif
+                    <a class="nav-item mr-2"
+                       href="{{ route('user.tenants.create', auth()->id()) }}">
+                        Choose/Change Tenant
+                    </a>
 
-                        @enduser
-                        {{-- @tenant
-                         <li class="nav-item">
-                             <a href="{{ route('projects') }}" class="nav-link">Projects</a>
-                         </li>
-                         @endtenant--}}
+                    @enduser
+                    {{-- @tenant
+                     <li class="nav-item">
+                         <a href="{{ route('projects') }}" class="nav-link">Projects</a>
+                     </li>
+                     @endtenant--}}
                     </ul>
                 </nav>
             </div>
