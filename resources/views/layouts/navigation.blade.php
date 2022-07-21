@@ -13,10 +13,17 @@
                 <!-- Navigation Links -->
                 <nav class="navbar navbar-expand-lg navbar-light mr-auto">
                     @admin
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                           href="#"
+                           id="navbarDropdown"
+                           role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+
                             Tenants
+
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @tenant
@@ -29,7 +36,7 @@
                             @endtenant
                             <a href="{{ route('tenants.create') }}" class="dropdown-item">New Tenant</a>
                         </div>
-                    </li>
+                    </div>
                     @endadmin
                     @user
                     @if(auth()->user()->tenant_id == null)
