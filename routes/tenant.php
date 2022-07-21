@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserTenantManagementController;
 use Illuminate\Support\Facades\Auth;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
@@ -22,29 +23,31 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-//Route::middleware([
-//    InitializeTenancyByPath::class,
-//    PreventAccessFromCentralDomains::class
-//])->get('/', function () {
-//    dd('hi');
-//})->name('tenant.change');
 
 
-Route::group([
-    'prefix' => '{tenant}',
-    'middleware' => [
-        InitializeTenancyByPath::class,
-        PreventAccessFromCentralDomains::class,
-        'auth'
-    ],
-    'as' => 'tenant.'
-], function () {
-    Route::get('/', [TenantController::class, 'show']);
+Route::middleware([
+    InitializeTenancyByPath::class,
+    PreventAccessFromCentralDomains::class
+])->get('/', function () {
+    dd('hi');
+})->name('tenant.change');
 
-//    Route::get('register', [RegisteredUserController::class, 'create']);
-//    Route::post('register', [RegisteredUserController::class, 'store']);
+
+//Route::group([
+//    'prefix' => '{tenant}',
+//    'middleware' => [
+//        InitializeTenancyByPath::class,
+//        PreventAccessFromCentralDomains::class,
+//        'auth'
+//    ],
+//    'as' => 'tenant.'
+//], function () {
+//    Route::get('/', [TenantController::class, 'show']);
 //
-//    Route::get('login', [AuthenticatedSessionController::class, 'create']);
-//    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-
-});
+////    Route::get('register', [RegisteredUserController::class, 'create']);
+////    Route::post('register', [RegisteredUserController::class, 'store']);
+////
+////    Route::get('login', [AuthenticatedSessionController::class, 'create']);
+////    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+//
+//});
