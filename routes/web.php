@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\UserTenantManagementController;
+use App\Http\Middleware\IsUser;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,10 +27,13 @@ Route::get('/', function () {
 });
 
 
-Route::get('/tenants/all', [TenantController::class, 'index'])->name('tenants');
-Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
-Route::post('/tenants/store', [TenantController::class, 'store'])->name('tenants.store');
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::get('/tenants/all', [TenantController::class, 'index'])->name('tenants');
+    Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
+    Route::post('/tenants/store', [TenantController::class, 'store'])->name('tenants.store');
+});
+
+Route::middleware(['auth', 'isUser'])->group(function () {
     Route::get('{user}/tenants/choice', [UserTenantManagementController::class, 'create'])->name('user.tenants.create');
     Route::post('{user}/tenants/store', [UserTenantManagementController::class, 'store'])->name('user.tenants.store');
 });
