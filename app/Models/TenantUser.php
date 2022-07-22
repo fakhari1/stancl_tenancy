@@ -11,12 +11,15 @@ class TenantUser extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'users';
 
     protected $fillable = [
         'id',
         'name',
         'email',
+        'email_verified_at',
         'password',
+        'remember_token',
     ];
 
     protected $hidden = [

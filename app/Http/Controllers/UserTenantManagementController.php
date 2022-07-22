@@ -15,43 +15,12 @@ class UserTenantManagementController extends Controller
 {
     public function create(User $user, DatabaseManager $database)
     {
-//        dd(User::first(), DB::table('tenant_tehran.users')->get(), User::first());
-//        dd(DB::table('tenant_tehran.users')->get());
-//        config(
-//            [
-//                'database.connections.tenant' => $user->tenant->database()->connection()
-//            ]
-//        );
-
-        $database->connectToTenant($user->tenant);
-        $database->reconnectToCentral();
-
-        dd(User::first());
-//        dd(User::on($user->tenant->database()->connection())->get());
-
-
-//        $connection = sprintf("database.connections.%s", config('database.default'));
-//        DB::purge(config('database.default'));
-//        DB::reconnect(config('database.default'));
+//        $database->connectToTenant($user->tenant);
+//        $database->reconnectToCentral();
 //
-//        $db = DB::connection();
-//        $current_db = '';
-//        foreach ($db->select("SHOW DATABASES") as $database) {
-//            $arr = json_decode(json_encode($database), true);
-//            if ($arr['Database'] == $user->tenant->tenancy_db_name) {
-//                $current_db = $arr['Database'];
-//            }
-//        }
-//
-//        config()->set($connection . '.database', $current_db);
-//
-//
-//
-//        dd(DB::select("select * from {$current_db}.users"));
+//        dd(User::first());
 
-        return 'hi';
         $tenants = Tenant::all();
-
         return view('auth.choose-tenant', compact('tenants', 'user'));
     }
 
