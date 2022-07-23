@@ -16,7 +16,6 @@ use App\Http\Middleware\IsUser;
 |
 */
 require __DIR__ . '/auth.php';
-require __DIR__ . '/tenant.php';
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -36,5 +35,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 Route::middleware(['auth', 'isUser'])->group(function () {
     Route::get('{user}/tenants/choice', [UserTenantManagementController::class, 'create'])->name('user.tenants.create');
     Route::post('{user}/tenants/store', [UserTenantManagementController::class, 'store'])->name('user.tenants.store');
+
+    Route::get('{user}/tenant/clone', [UserTenantManagementController::class, 'cloneUser'])->name('user.tenants.clone');
+
 });
 

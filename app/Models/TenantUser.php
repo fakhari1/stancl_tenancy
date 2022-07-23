@@ -20,6 +20,7 @@ class TenantUser extends Model
         'email_verified_at',
         'password',
         'remember_token',
+        'tenant_id'
     ];
 
     protected $hidden = [
@@ -30,4 +31,9 @@ class TenantUser extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class, 'tenant_id', 'id');
+    }
 }
