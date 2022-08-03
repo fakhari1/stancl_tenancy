@@ -23,7 +23,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
 
 
 Route::group([
-    'prefix' => '/{tenant}',
+    'prefix' => '/tenants/{tenant}',
     'middleware' => [
         'web',
         InitializeTenancyByPath::class,

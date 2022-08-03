@@ -37,6 +37,5 @@ Route::middleware(['auth', 'isUser'])->group(function () {
     Route::post('{user}/tenants/store', [UserTenantManagementController::class, 'store'])->name('user.tenants.store');
 
     Route::get('{user}/tenant/clone', [UserTenantManagementController::class, 'cloneUser'])->name('user.tenants.clone');
-
 });
 
