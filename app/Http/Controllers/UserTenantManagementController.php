@@ -3,27 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tenant;
+use App\Models\TenantUser;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Stancl\Tenancy\Database\DatabaseManager;
+
 
 class UserTenantManagementController extends Controller
 {
     public function create(User $user)
     {
-        dd(DB::connection('central'));
         $tenants = Tenant::all();
-
         return view('auth.choose-tenant', compact('tenants', 'user'));
     }
 
-    public function store(Request $request, User $user)
+    public function store(Request $request, User $user, DatabaseManager $database)
     {
         $user->update([
             'tenant_id' => $request->tenant
         ]);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('user.tenants.clone', $user);
+    }
+
+    public function cloneUser(User $user, DatabaseManager $database)
+    {
+        $database->connectToTenant($user->tenant);
+        $tenantUser = TenantUser::query()->create($user->toArray());
+        system("npm run build");
+        auth()->logout();
+
+        return redirect("/{$tenantUser->tenant->id}");
     }
 }

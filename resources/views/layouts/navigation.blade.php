@@ -12,6 +12,7 @@
 
                 <!-- Navigation Links -->
                 <nav class="navbar navbar-expand-lg navbar-light mr-auto">
+{{--                    <div class="nav-item">Your Tenant is {{ tenant('id') ?? '' }}</div>--}}
                     @admin
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle"
@@ -38,6 +39,9 @@
                         </div>
                     </div>
                     @endadmin
+                    <div class="nav-item">
+                        {{ $currentTenant ?? '' }}
+                    </div>
                     @user
                     @if(auth()->user()->tenant_id == null)
                         <span class="nav-item mr-2">

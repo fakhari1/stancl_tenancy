@@ -17,6 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
         'id',
         'name',
@@ -30,22 +31,22 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+//    protected $hidden = [
+//        'password',
+//        'remember_token',
+//    ];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+//    protected $casts = [
+//        'email_verified_at' => 'datetime',
+//    ];
 
     public function tenant()
     {
-        return $this->belongsTo(Tenant::class);
+        return $this->belongsTo(Tenant::class, 'tenant_id', 'id');
     }
 }

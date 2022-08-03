@@ -7,6 +7,7 @@ use App\Tenant\Manager;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Stancl\Tenancy\Database\DatabaseManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,9 +30,13 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.navigation', function ($view) {
             $tenants = Tenant::all();
-
             $view->with('tenants', $tenants);
         });
+
+//        View::composer('*', function ($v) {
+//            $currentTenant = config('database');
+//            $v->with('currentTenant', $currentTenant);
+//        });
 
         Blade::if('tenant', function () {
             return Tenant::query()->count() > 0;
