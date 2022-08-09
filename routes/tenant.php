@@ -7,7 +7,8 @@ use App\Http\Controllers\TenantDashboardController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\TenantAuthenticatedController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
-
+use Illuminate\Http\Request;
+use App\Http\Middleware\RedirectIfTenancyNotFound;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,18 +23,19 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
 */
 
 
-Route::group([
-    'prefix' => '/tenants/{tenant}',
-    'middleware' => [
-        'web',
-        InitializeTenancyByPath::class,
-//        PreventAccessFromCentralDomains::class
-    ]
-], function ($tenant) {
+Route::middleware([
+    InitializeTenancyByPath::class,
+])
+    ->prefix('{tenant}')
+    ->where([
+        "tenant" => "^((?!register|login|dashboard).)*$"
+    ])->group(function () {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/dashboard', [TenantDashboardController::class, 'index'])->middleware('auth');
+
+    Route::get('/dashboard', [TenantDashboardController::class, 'index']);
+
     Route::get('/login', [TenantAuthenticatedController::class, 'create']);
     Route::post('/login', [TenantAuthenticatedController::class, 'store']);
 });

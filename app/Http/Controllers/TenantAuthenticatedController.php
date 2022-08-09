@@ -10,7 +10,7 @@ class TenantAuthenticatedController extends Controller
 {
     public function create()
     {
-        return view('auth.login');
+        return view('tenants.auth.login');
     }
 
     public function store(LoginRequest $request)
@@ -19,10 +19,6 @@ class TenantAuthenticatedController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended("/" . tenant('id') . "/" . "dashboard");
+        return redirect()->intended(tenant('id') . "/dashboard");
     }
-
-
-
-
 }

@@ -15,11 +15,10 @@ use App\Http\Middleware\IsUser;
 | contains the "web" middleware group. Now create something great!
 |
 */
-require __DIR__ . '/auth.php';
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'isAdmin'])->name('dashboard');
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,4 +37,7 @@ Route::middleware(['auth', 'isUser'])->group(function () {
 
     Route::get('{user}/tenant/clone', [UserTenantManagementController::class, 'cloneUser'])->name('user.tenants.clone');
 });
+
+require __DIR__ . '/auth.php';
+require __DIR__ . '/tenant.php';
 

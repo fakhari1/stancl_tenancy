@@ -19,6 +19,6 @@ class isAdmin
         if (auth()->user()->is_admin == 1)
             return $next($request);
 
-        return redirect('/dashboard');
+        return redirect('/');
     }
 }

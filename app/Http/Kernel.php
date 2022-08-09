@@ -4,8 +4,9 @@ namespace App\Http;
 
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isUser;
+use App\Http\Middleware\RedirectIfTenancyNotFound;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-
+use App\Http\Middleware\AuthenticatedInTenant;
 class Kernel extends HttpKernel
 {
     /**
@@ -66,6 +67,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isUser' => isUser::class,
-        'isAdmin' => isAdmin::class
+        'isAdmin' => isAdmin::class,
+        'redirectIfTenantNotFound' => RedirectIfTenancyNotFound::class,
+        'tenant_auth' => AuthenticatedInTenant::class
     ];
 }
