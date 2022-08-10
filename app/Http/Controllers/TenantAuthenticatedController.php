@@ -26,7 +26,7 @@ class TenantAuthenticatedController extends Controller
         return redirect()->intended(route('tenant.dashboard', $user->tenant_id));
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         if (auth()->check())
             auth()->logout();
