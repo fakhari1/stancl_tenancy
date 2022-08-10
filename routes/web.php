@@ -41,13 +41,17 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('{tenant}', function () {
-    return view('welcome');
-})->name('tenant.home');
 
 Route::middleware(['tenancyPathInit'])->group(function () {
+
+    Route::get('{tenant}', function () {
+        return view('welcome');
+    })->name('tenant.home');
+
     Route::get('{tenant}/dashboard', [TenantDashboardController::class, 'index'])->middleware('tenantAuth')->name('tenant.dashboard');
 
     Route::get('{tenant}/login', [TenantAuthenticatedController::class, 'create']);
     Route::post('{tenant}/login', [TenantAuthenticatedController::class, 'store'])->name('tenant.login');
+
+    Route::post('{tenant}/logout', [TenantAuthenticatedController::class, 'logout'])->name('tenant.logout');
 });
