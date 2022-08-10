@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\UserTenantManagementController;
-use App\Http\Middleware\IsUser;
+use App\Http\Controllers\TenantDashboardController;
+use App\Http\Controllers\TenantAuthenticatedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,29 +16,38 @@ use App\Http\Middleware\IsUser;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'isAdmin'])->name('dashboard');
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/tenants/all', [TenantController::class, 'index'])->name('tenants');
-    Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
-    Route::post('/tenants/store', [TenantController::class, 'store'])->name('tenants.store');
-});
-
-Route::middleware(['auth', 'isUser'])->group(function () {
-    Route::get('{user}/tenants/choice', [UserTenantManagementController::class, 'create'])->name('user.tenants.create');
-    Route::post('{user}/tenants/store', [UserTenantManagementController::class, 'store'])->name('user.tenants.store');
-
-    Route::get('{user}/tenant/clone', [UserTenantManagementController::class, 'cloneUser'])->name('user.tenants.clone');
-});
-
 require __DIR__ . '/auth.php';
-require __DIR__ . '/tenant.php';
+Route::get('/', function () {
+//    auth()->logout();
+    return view('welcome');
+})->name('central.home');
 
+Route::middleware(['auth'])->group(function () {
+    Route::middleware(['isAdmin'])->get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::middleware(['isAdmin'])->group(function () {
+        Route::get('/tenants/all', [TenantController::class, 'index'])->name('tenants');
+        Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
+        Route::post('/tenants/store', [TenantController::class, 'store'])->name('tenants.store');
+    });
+
+    Route::middleware(['isUser'])->group(function () {
+        Route::get('{user}/tenants/choice', [UserTenantManagementController::class, 'create'])->name('user.tenants.create');
+        Route::post('{user}/tenants/store', [UserTenantManagementController::class, 'store'])->name('user.tenants.store');
+
+        Route::get('{user}/tenant/clone', [UserTenantManagementController::class, 'cloneUser'])->name('user.tenants.clone');
+    });
+});
+
+Route::get('{tenant}', function () {
+    return view('welcome');
+})->name('tenant.home');
+
+Route::middleware(['tenancyPathInit'])->group(function () {
+    Route::get('{tenant}/dashboard', [TenantDashboardController::class, 'index'])->middleware('tenantAuth')->name('tenant.dashboard');
+
+    Route::get('{tenant}/login', [TenantAuthenticatedController::class, 'create']);
+    Route::post('{tenant}/login', [TenantAuthenticatedController::class, 'store'])->name('tenant.login');
+});

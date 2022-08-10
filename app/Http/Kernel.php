@@ -4,9 +4,11 @@ namespace App\Http;
 
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isUser;
-use App\Http\Middleware\RedirectIfTenancyNotFound;
+use App\Http\Middleware\PreventFromTenantConnection;
+use App\Http\Middleware\TenancyPathInitialize;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\AuthenticatedInTenant;
+
 class Kernel extends HttpKernel
 {
     /**
@@ -68,7 +70,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isUser' => isUser::class,
         'isAdmin' => isAdmin::class,
-        'redirectIfTenantNotFound' => RedirectIfTenancyNotFound::class,
-        'tenant_auth' => AuthenticatedInTenant::class
+        'tenancyPathInit' => TenancyPathInitialize::class,
+        'tenantAuth' => AuthenticatedInTenant::class,
+        'preventFromTenants' => PreventFromTenantConnection::class
     ];
 }

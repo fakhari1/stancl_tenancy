@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class TenantAuthenticatedController extends Controller
@@ -19,6 +20,8 @@ class TenantAuthenticatedController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(tenant('id') . "/dashboard");
+        $user = auth()->user();
+
+        return redirect()->intended(route('tenant.dashboard', $user->tenant_id));
     }
 }

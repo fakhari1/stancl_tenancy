@@ -7,6 +7,7 @@ use App\Models\TenantUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Stancl\Tenancy\Database\DatabaseManager;
+use Stancl\Tenancy\Facades\Tenancy;
 
 
 class UserTenantManagementController extends Controller
@@ -17,7 +18,7 @@ class UserTenantManagementController extends Controller
         return view('auth.choose-tenant', compact('tenants', 'user'));
     }
 
-    public function store(Request $request, User $user, DatabaseManager $database)
+    public function store(Request $request, User $user)
     {
         $user->update([
             'tenant_id' => $request->tenant
@@ -29,10 +30,10 @@ class UserTenantManagementController extends Controller
     public function cloneUser(User $user, DatabaseManager $database)
     {
         $database->connectToTenant($user->tenant);
-        $tenantUser = TenantUser::query()->create($user->toArray());
-        system("npm run build");
-        auth()->logout();
 
+        $tenantUser = TenantUser::query()->create($user->toArray());
+
+        auth()->logout();
         return redirect("/{$tenantUser->tenant->id}");
     }
 }
