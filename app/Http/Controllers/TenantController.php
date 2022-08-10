@@ -29,7 +29,7 @@ class TenantController extends Controller
         $tenant = Tenant::query()->create(['id' => $request->id]);
 
         // {id}.saas.test
-        $domain = $request->id . "." . config('tenancy.central_domains')[0];
+        $domain = config('tenancy.central_domains')[0];
         $tenant->domains()->create(['domain' => $domain]);
 
         return redirect()->to($tenant->id);
